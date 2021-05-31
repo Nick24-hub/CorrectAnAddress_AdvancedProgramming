@@ -7,7 +7,7 @@ public class AddressesList {
     private List<Addresses> addressesList;
 
     public AddressesList() {
-        addressesList=new ArrayList<>();
+        addressesList = new ArrayList<>();
     }
 
     public AddressesList(List<Addresses> addressesList) {
@@ -21,8 +21,8 @@ public class AddressesList {
     public void setAddressesList(List<Addresses> addressesList) {
         this.addressesList = addressesList;
     }
-    public void addAddressesList(Addresses address)
-    {
+
+    public void addAddressesList(Addresses address) {
         addressesList.add(address);
     }
 }

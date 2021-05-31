@@ -14,10 +14,10 @@ import java.util.Locale;
 
 
 @RestController
-@RequestMapping({"/Search/en"})
-public class ServiceController {
+@RequestMapping({"/Search/ro"})
+public class ServiceControllerRo {
 
-    private Locale locale = Locale.getDefault();
+    private Locale locale = new Locale("ro");
 
     @GetMapping({"/Any"})
     public ResponseEntity<AddressesList> getAddressAny(@RequestParam String address) throws IOException, InterruptedException {
