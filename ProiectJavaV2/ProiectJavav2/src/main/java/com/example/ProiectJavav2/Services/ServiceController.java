@@ -27,6 +27,17 @@ public class ServiceController {
         AddressesList addressesList=new AddressesList(geocodingController.GeocodingControllerCCS(country,city,street));
         return new ResponseEntity<>(addressesList, HttpStatus.OK);
     }
-
+    @GetMapping({"/PostalCode"})
+    public ResponseEntity<AddressesList> getAddressPostal(@RequestParam String postalCode) throws IOException, InterruptedException {
+        GeocodingController geocodingController=new GeocodingController();
+        AddressesList addressesList=new AddressesList(geocodingController.GeocodingControllerPostalCode(postalCode));
+        return new ResponseEntity<>(addressesList, HttpStatus.OK);
+    }
+    @GetMapping({"/CSC"})
+    public ResponseEntity<AddressesList> getAddressCSC(@RequestParam String country,@RequestParam String state,@RequestParam String city) throws IOException, InterruptedException {
+        GeocodingController geocodingController=new GeocodingController();
+        AddressesList addressesList=new AddressesList(geocodingController.GeocodingControllerCSC(country,state,city));
+        return new ResponseEntity<>(addressesList, HttpStatus.OK);
+    }
 }
 

@@ -21,7 +21,20 @@ public class Geocoder {
                 +"street"+"="+street;
         return getResponse(httpClient, query);
     }
+    public String GeocodeCSC(String country,String state,String city) throws IOException, InterruptedException {
 
+        HttpClient httpClient = HttpClient.newHttpClient();
+        String query="country"+"="+country+";"
+                +"state"+"="+state+";"
+                +"city"+"="+city;
+        return getResponse(httpClient, query);
+    }
+    public String GeocodePostalCode(String postalCode) throws IOException, InterruptedException {
+
+        HttpClient httpClient = HttpClient.newHttpClient();
+        String query="postalCode"+"="+postalCode;
+        return getResponse(httpClient, query);
+    }
 
     private String getResponse(HttpClient httpClient, String query) throws IOException, InterruptedException {
         String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);

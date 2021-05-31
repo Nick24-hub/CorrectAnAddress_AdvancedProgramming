@@ -26,7 +26,19 @@ public class GeocodingController {
 
     }
 
+    public List<Addresses> GeocodingControllerCSC(String country, String state, String city) throws IOException, InterruptedException {
 
+        Geocoder geocoder = new Geocoder();
+        String response = geocoder.GeocodeCSC(country, state, city);
+        return returnAddressList(response);
+
+    }
+
+    public List<Addresses> GeocodingControllerPostalCode(String postalCode) throws IOException, InterruptedException {
+        Geocoder geocoder = new Geocoder();
+        String response = geocoder.GeocodePostalCode(postalCode);
+        return returnAddressList(response);
+    }
 
     public List<Addresses> returnAddressList(String response) throws JsonProcessingException {
         List<Addresses> addressesList = new ArrayList<>();
