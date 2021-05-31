@@ -31,14 +31,14 @@ public class GeocodingController {
 
         Geocoder geocoder = new Geocoder();
         String response = geocoder.GeocodeAny(query);
-        return returnAddressList(response);
+        return returnAddressListForStreet(response);
     }
 
     public List<Addresses> GeocodingControllerCCS(String country, String city, String street) throws IOException, InterruptedException {
 
         Geocoder geocoder = new Geocoder();
         String response = geocoder.GeocodeCCS(country, city, street);
-        return returnAddressList(response);
+        return returnAddressListForStreet(response);
 
     }
 
@@ -55,6 +55,19 @@ public class GeocodingController {
         String response = geocoder.GeocodePostalCode(postalCode);
         return returnAddressList(response);
     }
+    public List<Addresses> GeocodingControllerCoordinates(String query) throws IOException, InterruptedException {
+
+        Geocoder geocoder = new Geocoder();
+        String response = geocoder.GeocodeAny(query);
+        return returnCoordinatesForAddressList(response);
+    }
+    public List<Addresses> GeocodingControllerAddressByCoordinates(String lat,String lng) throws IOException, InterruptedException {
+
+        Geocoder geocoder = new Geocoder();
+        String response = geocoder.GeocodeCoordinates(lat,lng);
+        return returnCoordinatesForAddressList(response);
+    }
+
 
     public String createLabel(JsonNode address, ResourceBundle messages)
     {
@@ -70,7 +83,7 @@ public class GeocodingController {
         return label;
     }
 
-    public List<Addresses> returnAddressList(String response) throws JsonProcessingException {
+    public List<Addresses> returnAddressListForStreet(String response) throws JsonProcessingException {
         List<Addresses> addressesList = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         JsonNode responseJsonNode = mapper.readTree(response);
@@ -81,14 +94,51 @@ public class GeocodingController {
             JsonNode address = item.get("address");
             String label = createLabel(address,messages);
 
-            JsonNode position = item.get("position");
-
-            String lat = position.get("lat").asText();
-            String lng = position.get("lng").asText();
-            addressesList.add(new Addresses(label + " " + messages.getString("response") + " " + lat + "," + lng + "."));
+            addressesList.add(new Addresses(messages.getString("suggestedLocation")+label));
         }
 
         return addressesList;
     }
+    public List<Addresses> returnAddressList(String response) throws JsonProcessingException {
+        List<Addresses> addressesList = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode responseJsonNode = mapper.readTree(response);
+        JsonNode items = responseJsonNode.get("items");
+        ResourceBundle messages = ResourceBundle.getBundle("Messages", locale);
+
+        for (JsonNode item : items) {
+            JsonNode address = item.get("address");
+            String label = address.get("label").asText();
+
+            addressesList.add(new Addresses(messages.getString("suggestedLocation")+label));
+        }
+
+        return addressesList;
+    }
+    public List<Addresses> returnCoordinatesForAddressList(String response) throws JsonProcessingException {
+        List<Addresses> addressesList = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode responseJsonNode = mapper.readTree(response);
+        JsonNode items = responseJsonNode.get("items");
+        ResourceBundle messages = ResourceBundle.getBundle("Messages", locale);
+
+        for (JsonNode item : items) {
+            JsonNode address = item.get("address");
+            String label =  address.get("label").asText();
+
+            JsonNode position = item.get("position");
+
+            String lat = position.get("lat").asText();
+            String lng = position.get("lng").asText();
+            addressesList.add(new Addresses(label+" "+messages.getString("located")+" "
+                    +messages.getString("lat") +lat
+                    +" "+messages.getString("and")+" "
+                    +messages.getString("lng") +lng
+            ));
+        }
+        return addressesList;
+    }
+
+
 
 }

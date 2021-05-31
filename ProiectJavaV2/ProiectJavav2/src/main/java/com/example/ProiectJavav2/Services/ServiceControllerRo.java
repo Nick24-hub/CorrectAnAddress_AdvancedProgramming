@@ -46,5 +46,17 @@ public class ServiceControllerRo {
         AddressesList addressesList = new AddressesList(geocodingController.GeocodingControllerCSC(country, state, city));
         return new ResponseEntity<>(addressesList, HttpStatus.OK);
     }
+    @GetMapping({"/Coordinates"})
+    public ResponseEntity<AddressesList> getAddressCoordinates(@RequestParam String address) throws IOException, InterruptedException {
+        GeocodingController geocodingController = new GeocodingController(locale);
+        AddressesList addressesList = new AddressesList(geocodingController.GeocodingControllerCoordinates(address));
+        return new ResponseEntity<>(addressesList, HttpStatus.OK);
+    }
+    @GetMapping({"/CoordinatesByAddress"})
+    public ResponseEntity<AddressesList> getAddressByCoordinates(@RequestParam String lat,@RequestParam String lng) throws IOException, InterruptedException {
+        GeocodingController geocodingController = new GeocodingController(locale);
+        AddressesList addressesList = new AddressesList(geocodingController.GeocodingControllerAddressByCoordinates(lat,lng));
+        return new ResponseEntity<>(addressesList, HttpStatus.OK);
+    }
 }
 

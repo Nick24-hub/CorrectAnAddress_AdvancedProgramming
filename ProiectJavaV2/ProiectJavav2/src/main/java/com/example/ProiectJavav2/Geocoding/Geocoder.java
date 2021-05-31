@@ -20,7 +20,7 @@ public class Geocoder {
         String query = "country" + "=" + country + ";"
                 + "city" + "=" + city + ";"
                 + "street" + "=" + street;
-        return getResponse(httpClient, query);
+        return getResponseQualifiedQuery(httpClient, query);
     }
 
     public String GeocodeCSC(String country, String state, String city) throws IOException, InterruptedException {
@@ -29,17 +29,26 @@ public class Geocoder {
         String query = "country" + "=" + country + ";"
                 + "state" + "=" + state + ";"
                 + "city" + "=" + city;
-        return getResponse(httpClient, query);
+        return getResponseQualifiedQuery(httpClient, query);
     }
 
     public String GeocodePostalCode(String postalCode) throws IOException, InterruptedException {
 
         HttpClient httpClient = HttpClient.newHttpClient();
         String query = "postalCode" + "=" + postalCode;
-        return getResponse(httpClient, query);
+        return getResponseQualifiedQuery(httpClient, query);
     }
+    public String GeocodeAny(String query) throws IOException, InterruptedException {
 
-    private String getResponse(HttpClient httpClient, String query) throws IOException, InterruptedException {
+        HttpClient httpClient = HttpClient.newHttpClient();
+        return getResponseQuery(httpClient,query);
+    }
+    public String GeocodeCoordinates(String lat,String lng) throws IOException, InterruptedException {
+
+        HttpClient httpClient = HttpClient.newHttpClient();
+        return getResponseCoordinates(httpClient,lat,lng);
+    }
+    private String getResponseQualifiedQuery(HttpClient httpClient, String query) throws IOException, InterruptedException {
         String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
         String requestUri = GEOCODING_RESOURCE + "?apiKey=" + API_KEY + "&qq=" + encodedQuery;
 
@@ -52,10 +61,8 @@ public class Geocoder {
         return geocodingResponse.body();
     }
 
-    public String GeocodeAny(String query) throws IOException, InterruptedException {
 
-        HttpClient httpClient = HttpClient.newHttpClient();
-
+    public String getResponseQuery(HttpClient httpClient,String query) throws IOException, InterruptedException {
         String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
         String requestUri = GEOCODING_RESOURCE + "?apiKey=" + API_KEY + "&q=" + encodedQuery;
 
@@ -67,6 +74,22 @@ public class Geocoder {
 
         return geocodingResponse.body();
     }
+    public String getResponseCoordinates(HttpClient httpClient,String lat,String lng) throws IOException, InterruptedException {
+        String query=lat+","+lng;
+        String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
+        String browse="https://geocode.search.hereapi.com/v1/browse";
+        String requestUri = browse + "?apiKey=" + API_KEY + "&at=" + encodedQuery;
+
+        HttpRequest geocodingRequest = HttpRequest.newBuilder().GET().uri(URI.create(requestUri))
+                .timeout(Duration.ofMillis(2000)).build();
+
+        HttpResponse<String> geocodingResponse = httpClient.send(geocodingRequest,
+                HttpResponse.BodyHandlers.ofString());
+
+        return geocodingResponse.body();
+    }
+
+
 
 
 }
