@@ -15,48 +15,38 @@ import java.util.Locale;
 
 @RestController
 @RequestMapping({"/Search/ro"})
-public class ServiceControllerRo {
+public class ServiceControllerRo extends ServiceController{
 
     private Locale locale = new Locale("ro");
 
     @GetMapping({"/Any"})
     public ResponseEntity<AddressesList> getAddressAny(@RequestParam String address) throws IOException, InterruptedException {
-        GeocodingController geocodingController = new GeocodingController(locale);
-        AddressesList addressesList = new AddressesList(geocodingController.GeocodingControllerAny(address));
-        return new ResponseEntity<>(addressesList, HttpStatus.OK);
+        return super.getAddressAny(locale, address);
     }
 
     @GetMapping({"/CCS"})
     public ResponseEntity<AddressesList> getAddressCCS(@RequestParam String country, @RequestParam String city, @RequestParam String street) throws IOException, InterruptedException {
-        GeocodingController geocodingController = new GeocodingController(locale);
-        AddressesList addressesList = new AddressesList(geocodingController.GeocodingControllerCCS(country, city, street));
-        return new ResponseEntity<>(addressesList, HttpStatus.OK);
+        return super.getAddressCCS(locale, country, city, street);
     }
 
     @GetMapping({"/PostalCode"})
     public ResponseEntity<AddressesList> getAddressPostal(@RequestParam String postalCode) throws IOException, InterruptedException {
-        GeocodingController geocodingController = new GeocodingController(locale);
-        AddressesList addressesList = new AddressesList(geocodingController.GeocodingControllerPostalCode(postalCode));
-        return new ResponseEntity<>(addressesList, HttpStatus.OK);
+        return super.getAddressPostal(locale, postalCode);
     }
 
     @GetMapping({"/CSC"})
     public ResponseEntity<AddressesList> getAddressCSC(@RequestParam String country, @RequestParam String state, @RequestParam String city) throws IOException, InterruptedException {
-        GeocodingController geocodingController = new GeocodingController(locale);
-        AddressesList addressesList = new AddressesList(geocodingController.GeocodingControllerCSC(country, state, city));
-        return new ResponseEntity<>(addressesList, HttpStatus.OK);
+        return super.getAddressCSC(locale, country, state, city);
     }
+
     @GetMapping({"/Coordinates"})
     public ResponseEntity<AddressesList> getAddressCoordinates(@RequestParam String address) throws IOException, InterruptedException {
-        GeocodingController geocodingController = new GeocodingController(locale);
-        AddressesList addressesList = new AddressesList(geocodingController.GeocodingControllerCoordinates(address));
-        return new ResponseEntity<>(addressesList, HttpStatus.OK);
+        return super.getAddressCoordinates(locale, address);
     }
+
     @GetMapping({"/CoordinatesByAddress"})
-    public ResponseEntity<AddressesList> getAddressByCoordinates(@RequestParam String lat,@RequestParam String lng) throws IOException, InterruptedException {
-        GeocodingController geocodingController = new GeocodingController(locale);
-        AddressesList addressesList = new AddressesList(geocodingController.GeocodingControllerAddressByCoordinates(lat,lng));
-        return new ResponseEntity<>(addressesList, HttpStatus.OK);
+    public ResponseEntity<AddressesList> getAddressByCoordinates(@RequestParam String lat, @RequestParam String lng) throws IOException, InterruptedException {
+        return super.getAddressByCoordinates(locale, lat, lng);
     }
 }
 
