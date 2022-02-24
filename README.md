@@ -1,7 +1,7 @@
 # CorrectAnAddress_AdvancedProgramming
 
 CorrectAnAddress is an aplication design to  take diferent types of request and give you an answer with all possible addresses which match your request.
-This project was made by a two people team consisting of Alecandrescu Nicolae and Vacaru Stefan Robert.
+This project was made by a two people team consisting of Alexandrescu Nicolae and Vacaru Stefan Robert.
 
 ### Contributions of Vacaru Stefan Robert:
  1.Communication with the Geocoding API found at: [API](https://developer.here.com/documentation/geocoding-search-api/api-reference-swagger.html?fbclid=IwAR3AxCgm1-ik0Tm_B_U0A4-kkfjJKDTK-fAMrWrfAqPTRXRfHdGeiC4QP8w)
